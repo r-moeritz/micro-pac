@@ -123,13 +123,14 @@ colmem:         .equ $d800       ;colour memory
 sp0mem:         .equ $5000       ;sprite 0 address
 sp0ptr:         .equ $4ff8       ;sprite 0 pointer
 sp0loc:         .equ $1000/$40   ;sp0mem
-
+border:         .equ $7999       ;border byte
 
         ;; Constants
         ;; ------------------------------------------------------------
 
         ;; Misc.
-raslin:         .equ 250         ;line for raster interrupt
+linclr:         .equ 249
+linset:         .equ 255        
 spxscog:        .equ 24          ;sprite x screen origin
 spyscog:        .equ 50          ;sprite y screen origin
 maxpell:        .equ 182         ;maximum number of pellets (incl. energizers)

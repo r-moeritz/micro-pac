@@ -141,6 +141,7 @@ initvic:
         lda #0
         sta extcol
         sta bgcol0
+        sta border
         rts
 
         ;; Fill colour memory from colour table
@@ -192,7 +193,6 @@ setcol4:
         ;;  - joyy = $ff: stick moved up
         ;;  - joybtn = $01: button pressed
 readjoy2:
-        sei
         lda ci1pra
         ldy #0
         ldx #0
@@ -214,5 +214,4 @@ djr3:   lsr
         lda #0
         rol
         sta joybtn
-        cli
         rts

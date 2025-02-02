@@ -14,7 +14,7 @@ nxl:    .word 0
         jsr initvic
         jsr fillcolmem
         jsr setupirq
-        jsr setupnmi
+        ;; jsr setupnmi
         jsr newgame
 
         ;; Include program modules
