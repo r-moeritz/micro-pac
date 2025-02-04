@@ -34,7 +34,7 @@ procnmi:
         jne timbev
         tya
         and #%00000001
-        jeq sysnmi
+        jeq finnmi
         
         ;; Timer A fired: animate Pac-Man
 timaev: lda npelrem

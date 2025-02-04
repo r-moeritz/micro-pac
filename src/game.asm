@@ -33,6 +33,10 @@ clrbuf: filmem buf, 15, 0       ;$16 - $24
         rts
 
 printmen:
+        lda nmenrem
+        cmp #2
+        bcc :+
+        
         ;; Sprite 3
         ldbimm sp0loc+2, sp0ptr+3     ;set sprite 3 pointer
         lda sp0col
@@ -42,6 +46,11 @@ printmen:
         lda spena
         ora #%00001000
         sta spena                     ;enable sprite 3
+
+        lda nmenrem
+        cmp #3
+        bcc :+
+        
         ;; Sprite 4
         ldbimm sp0loc+2, sp0ptr+4     ;set sprite 4 pointer
         lda sp0col
@@ -51,8 +60,8 @@ printmen:
         lda spena
         ora #%00010000
         sta spena                     ;enable sprite 4
-        ;; Return
-        rts
+      
+:       rts
 
 printlvl:
         jsr lvlfrtspix          ;find fruit sprite index for level, store in .A

@@ -109,7 +109,6 @@ nminv:          .equ $0318       ;NMI vector
 
         ;; Interrupt routines
 sysirq:         .equ $ea7e       ;kernal IRQ handler
-sysnmi:         .equ $fe56       ;kernal NMI handler
 
 
         ;; Program memory locations
@@ -129,8 +128,9 @@ border:         .equ $7999       ;border byte
         ;; ------------------------------------------------------------
 
         ;; Misc.
-linclr:         .equ 249
-linset:         .equ 255        
+linmov:         .equ 1
+linclr:         .equ 248
+linset:         .equ 254
 spxscog:        .equ 24          ;sprite x screen origin
 spyscog:        .equ 50          ;sprite y screen origin
 maxpell:        .equ 182         ;maximum number of pellets (incl. energizers)
