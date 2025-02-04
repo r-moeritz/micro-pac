@@ -5,11 +5,12 @@
         ;; Setup handler for raster IRQ.
 setupirq:
         sei
-        ldbimm $7f, ci1icr
+        ldbimm $7f, ci1icr      ;disable CIA 1 IRQ
         ldbimm $03, irqmsk      ;enable raster IRQ & mob-data collision
-        ldbimm $1b, scroly
-        ldbimm linset, raster
+        ldbimm $1b, scroly      ;clear high bit of scroly
+        ldbimm linset, raster   ;set line for next raster IRQ
         ldwimm procirq, cinv
+        lda ci1icr              ;acknowledge IRQ, just in case
         cli
         rts
 
@@ -46,7 +47,7 @@ spcol:  lda irqwrd1+1           ;read saved sprite-sprite collision register
         jsr scrfrt              ;score the fruit
         jsr printscr            ;print the score
         ;; TODO: Show points earned sprite
-        ;; (NMI timer to hide after ~1.5s)
+        ;; (timer to hide after ~1.5s)
         jmp finirq
 
         ;; Handle sprite-background collision:
@@ -85,7 +86,7 @@ rasirq:
         bcs setbit
         cmp #linclr
         bcs clrbit
-
+        
 movpac: lda pacrem
         beq finmov
         lda pacdir

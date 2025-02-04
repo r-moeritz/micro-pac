@@ -60,6 +60,20 @@ printmen:
         lda spena
         ora #%00010000
         sta spena                     ;enable sprite 4
+
+        lda nmenrem
+        cmp #4
+        bcc :+
+
+        ;; Sprite 5
+        ldbimm sp0loc+2, sp0ptr+5     ;set sprite 5 pointer
+        lda sp0col
+        sta sp0col+5                  ;set sprite 5 colour
+        ldbimm 38, sp5x               ;set sprite 5 x loc
+        ldbimm 0, sp5y                ;set sprite 5 y loc
+        lda spena
+        ora #%00010000
+        sta spena                     ;enable sprite 5        
       
 :       rts
 

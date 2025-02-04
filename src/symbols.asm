@@ -6,9 +6,9 @@
         ;; Zero page memory locations
         ;; ------------------------------------------------------------
 
-        ;; 15-byte buffer for use in sub-routines,
-        ;; divided into 3x blocks of 5 bytes each.
-buf:            .ezp $16         ;$16-$24
+        ;; 10-byte temporary data buffer for use in sub-routines,
+        ;; divided into 2x blocks of 5 bytes each.
+buf:            .ezp $16         ;$16-$1f
         
         ;; Block for game loop
 wrd1:           .ezp buf
@@ -20,36 +20,34 @@ irqwrd1:        .ezp buf+$05
 irqwrd2:        .ezp buf+$07
 irqtmp:         .ezp buf+$09
         
-        ;; Block for NMI handler
-nmiwrd1:        .ezp buf+$0a
-nmiwrd2:        .ezp buf+$0c
-nmitmp:         .ezp buf+$0e
-
         ;; Joystick data
-joybtn:         .ezp $92         ;button value
-joyx:           .ezp $96         ;x axis value
-joyy:           .ezp $97         ;y axis value
+joybtn:         .ezp $20        ;button value
+joyx:           .ezp $21        ;x axis value
+joyy:           .ezp $22        ;y axis value
 
         ;; Pac-Man data
-pacsrc:         .ezp $9e         ;source node
-pactar:         .ezp $9f         ;target node
-pacdir:         .ezp $a3         ;facing direction
-pacdis:         .ezp $a4         ;distance to target
-pacrem:         .ezp $a5         ;distance remaining to target
+pacx:           .ezp $23        ;x coordinate
+pacy:           .ezp $24        ;y coordinate
+pacsrc:         .ezp $9e        ;source node
+pactar:         .ezp $9f        ;target node
+pacdir:         .ezp $a3        ;facing direction
+pacdis:         .ezp $a4        ;distance to target
+pacrem:         .ezp $a5        ;distance remaining to target
 
         ;; Scoring, gameplay
-npelrem:        .ezp $a6          ;number of pellets remaining
-nmenrem:        .ezp $a7          ;number of remaining "men"
-lvlnum:         .ezp $a8          ;level number
-frtena:         .ezp $a9          ;whether or not fruit is enabled        
-score:          .ezp $fc          ;player's score in BCD (4 bytes: $fc-$ff)
+npelrem:        .ezp $a6        ;number of pellets remaining
+nmenrem:        .ezp $a7        ;number of remaining "men"
+lvlnum:         .ezp $a8        ;level number
+frtena:         .ezp $a9        ;whether or not fruit is enabled        
+score:          .ezp $fc        ;player's score in BCD (4 bytes: $fc-$ff)
 
         ;; Animation
-pacaix:         .ezp $aa          ;Pac-Man animation frame index
-enzraix:        .ezp $ab          ;energizer animation frame index
-lvlend:         .ezp $9b          ;level end flashes
+pacaix:         .ezp $aa        ;Pac-Man animation frame index
+enzraix:        .ezp $ab        ;energizer animation frame index
+lvlend:         .ezp $9b        ;level end flashes
 
-        ;; Still available: $f7-$fb (5 bytes)
+        ;; Still available: $92,$96-$97, $f7-$fb (8 bytes)
+
         
         ;; Memory-mapped hardware registers
         ;; ------------------------------------------------------------
@@ -103,12 +101,9 @@ ci2crb:         .equ cia2 + $0f
         ;; Operating system memory locations
         ;; ------------------------------------------------------------
         
-        ;; Interrupt vectors
-cinv:           .equ $0314       ;IRQ vector
-nminv:          .equ $0318       ;NMI vector
-
-        ;; Interrupt routines
-sysirq:         .equ $ea7e       ;kernal IRQ handler
+        ;; IRQ addresses
+cinv:           .equ $0314      ;IRQ vector
+sysirq:         .equ $ea7e      ;kernal IRQ handler
 
 
         ;; Program memory locations
@@ -127,10 +122,12 @@ border:         .equ $7999       ;border byte
         ;; Constants
         ;; ------------------------------------------------------------
 
-        ;; Misc.
+        ;; Lines for raster IRQs
 linmov:         .equ 1
 linclr:         .equ 248
 linset:         .equ 254
+        
+        ;; Misc.
 spxscog:        .equ 24          ;sprite x screen origin
 spyscog:        .equ 50          ;sprite y screen origin
 maxpell:        .equ 182         ;maximum number of pellets (incl. energizers)
@@ -177,10 +174,6 @@ blki:           .equ $00
         ;; Index into buf to access memory block
         ;; reserved for IRQ handler
 irqblki:        .equ $05
-
-        ;; Index into buf to access memory block
-        ;; reserved for NMI handler
-nmiblki:        .equ $0a
 
         ;; The number of pellets that need to be eaten for bonus items
         ;; to appear the 1st and 2nd time

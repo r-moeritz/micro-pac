@@ -14,7 +14,6 @@ nxl:    .word 0
         jsr initvic
         jsr fillcolmem
         jsr setupirq
-        ;; jsr setupnmi
         jsr newgame
 
         ;; Include program modules
@@ -24,7 +23,6 @@ nxl:    .word 0
         include io.asm
         include maze.asm
         include irq.asm
-        include nmi.asm
         include game.asm
         include score.asm
         include fruit.asm
